@@ -108,7 +108,8 @@ def build_meaning_question(kanji: Kanji, all_kanji: list[Kanji]) -> list[dict]:
 def build_usage_question(
     kanji: Kanji, other_kanji_ids: list[int], db: Session
 ) -> list[dict] | None:
-    """1 correct sentence + 3 distractors (correct sentences from other kanji), shuffled."""
+    """1 correct sentence + 3 false sentences (all for this kanji), shuffled.
+    Falls back to other-kanji sentences only when false sentences are unavailable."""
     correct_sents = (
         db.query(Sentence)
         .filter(Sentence.kanji_id == kanji.id, Sentence.is_correct == True)
@@ -119,20 +120,29 @@ def build_usage_question(
 
     correct = random.choice(correct_sents)
 
-    # Pull one correct sentence from each of 3 random other kanji
-    other_ids = [kid for kid in other_kanji_ids if kid != kanji.id]
-    random.shuffle(other_ids)
-    distractors = []
-    for oid in other_ids:
-        if len(distractors) >= 3:
-            break
-        sents = (
-            db.query(Sentence)
-            .filter(Sentence.kanji_id == oid, Sentence.is_correct == True)
-            .all()
-        )
-        if sents:
-            distractors.append(random.choice(sents))
+    # Prefer false sentences for the same kanji so the target kanji appears in all options
+    false_sents = (
+        db.query(Sentence)
+        .filter(Sentence.kanji_id == kanji.id, Sentence.is_correct == False)
+        .all()
+    )
+    if len(false_sents) >= 3:
+        distractors = random.sample(false_sents, 3)
+    else:
+        # Fallback: pull from other kanji's correct sentences
+        other_ids = [kid for kid in other_kanji_ids if kid != kanji.id]
+        random.shuffle(other_ids)
+        distractors = list(false_sents)  # use whatever false ones exist
+        for oid in other_ids:
+            if len(distractors) >= 3:
+                break
+            sents = (
+                db.query(Sentence)
+                .filter(Sentence.kanji_id == oid, Sentence.is_correct == True)
+                .all()
+            )
+            if sents:
+                distractors.append(random.choice(sents))
 
     def _fmt(s: Sentence, is_correct: bool) -> dict:
         return {

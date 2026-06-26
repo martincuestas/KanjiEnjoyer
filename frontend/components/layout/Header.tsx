@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { clearToken, isAuthenticated } from "@/lib/auth";
-import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 function SeigaihaPattern() {
   return (
@@ -58,14 +57,10 @@ function SeigaihaPattern() {
 
 export default function Header() {
   const router = useRouter();
-  const [authed, setAuthed] = useState(false);
-
-  useEffect(() => {
-    setAuthed(isAuthenticated());
-  }, []);
+  const { username, isAuthed, authLoading, logout: authLogout } = useAuth();
 
   function logout() {
-    clearToken();
+    authLogout();
     router.replace("/login");
   }
 
@@ -129,12 +124,39 @@ export default function Header() {
         className="flex items-center gap-6 text-sm"
         style={{ position: "relative", zIndex: 1, color: "var(--color-ink-muted)" }}
       >
-        {authed ? (
+        {authLoading ? null : isAuthed ? (
           <>
             <Link href="/kanji" className="hover:opacity-70 transition-opacity">Kanji</Link>
             <Link href="/study" className="hover:opacity-70 transition-opacity">Estudiar</Link>
             <Link href="/stats" className="hover:opacity-70 transition-opacity">Stats</Link>
             <Link href="/settings" className="hover:opacity-70 transition-opacity">Ajustes</Link>
+            <span
+              className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium"
+              style={{
+                background: "var(--color-washi)",
+                border: "1px solid var(--color-border-light)",
+                color: "var(--color-ink-muted)",
+              }}
+            >
+              <span
+                style={{
+                  width: "18px",
+                  height: "18px",
+                  borderRadius: "50%",
+                  background: "var(--color-torii)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#fff",
+                  fontSize: "9px",
+                  fontWeight: 700,
+                  flexShrink: 0,
+                }}
+              >
+                {username?.[0]?.toUpperCase()}
+              </span>
+              {username}
+            </span>
             <button
               onClick={logout}
               className="hover:opacity-70 transition-opacity"

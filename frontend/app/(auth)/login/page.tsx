@@ -2,7 +2,8 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { loginRequest, setToken } from "@/lib/auth";
+import { loginRequest } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 
 function CardCorners() {
   const s = "var(--color-torii)";
@@ -26,6 +27,7 @@ function CardCorners() {
 
 export default function LoginPage() {
   const router = useRouter();
+  const auth = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -37,7 +39,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const token = await loginRequest(username.trim(), password);
-      setToken(token);
+      auth.login(token, username.trim());
       router.replace("/kanji");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al iniciar sesión.");

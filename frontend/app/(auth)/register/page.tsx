@@ -2,7 +2,8 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { registerRequest, setToken } from "@/lib/auth";
+import { registerRequest } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 
 function CardCorners() {
   const s = "var(--color-torii)";
@@ -26,6 +27,7 @@ function CardCorners() {
 
 export default function RegisterPage() {
   const router = useRouter();
+  const auth = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -42,7 +44,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const token = await registerRequest(username.trim(), password);
-      setToken(token);
+      auth.login(token, username.trim());
       router.replace("/kanji");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al registrarse.");

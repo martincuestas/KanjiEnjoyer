@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
 import Header from "@/components/layout/Header";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -41,9 +42,11 @@ export default function RootLayout({
       className={`${inter.variable} ${notoSansJP.variable} ${shipporiMincho.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
+        <AuthProvider>
           <Header />
           {children}
-        </body>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

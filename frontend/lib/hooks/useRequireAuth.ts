@@ -1,13 +1,15 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { isAuthenticated } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 
 export function useRequireAuth() {
   const router = useRouter();
+  const { isAuthed, authLoading } = useAuth();
+
   useEffect(() => {
-    if (!isAuthenticated()) {
+    if (!authLoading && !isAuthed) {
       router.replace("/login");
     }
-  }, [router]);
+  }, [authLoading, isAuthed, router]);
 }

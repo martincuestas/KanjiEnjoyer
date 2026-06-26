@@ -373,7 +373,7 @@ function UsageQuestion({
                   <span
                     className="text-xs mt-0.5"
                     style={{
-                      color: opt.is_correct ? "var(--color-correct)" : "var(--color-ink-faint)",
+                      color: answered && opt.is_correct ? "var(--color-correct)" : "var(--color-ink-faint)",
                     }}
                   >
                     {opt.translation}

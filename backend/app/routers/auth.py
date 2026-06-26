@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User
+from ..models import Attempt, User, UserKanjiSelection, UserProgress
 from ..schemas import TokenResponse, UserCreate, UserLogin, UserPublic
 from ..services.auth_service import (
     create_token,
@@ -36,3 +36,15 @@ def login(body: UserLogin, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserPublic)
 def me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
+def delete_account(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    db.query(Attempt).filter(Attempt.user_id == current_user.id).delete()
+    db.query(UserProgress).filter(UserProgress.user_id == current_user.id).delete()
+    db.query(UserKanjiSelection).filter(UserKanjiSelection.user_id == current_user.id).delete()
+    db.delete(current_user)
+    db.commit()

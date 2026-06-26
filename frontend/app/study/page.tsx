@@ -29,6 +29,7 @@ interface UsageOption {
   furigana: string | null;
   romaji: string | null;
   translation: string | null;
+  note: string | null;
   is_correct: boolean;
 }
 
@@ -377,6 +378,15 @@ function UsageQuestion({
                     }}
                   >
                     {opt.translation}
+                  </span>
+                )}
+                {/* Explanatory note only after answering — never via the pre-answer toggle, so it can't leak the answer */}
+                {answered && (isSelected || opt.is_correct) && opt.note && (
+                  <span
+                    className="text-xs mt-1 italic leading-relaxed"
+                    style={{ color: "var(--color-wrong)" }}
+                  >
+                    {opt.note}
                   </span>
                 )}
               </div>

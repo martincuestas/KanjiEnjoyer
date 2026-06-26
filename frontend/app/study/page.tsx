@@ -275,6 +275,8 @@ function UsageQuestion({
   answered: boolean;
   selectedIdx: number | null;
 }) {
+  const [showFurigana, setShowFurigana] = useState(false);
+
   if (!item.usage_question) return null;
 
   return (
@@ -290,8 +292,25 @@ function UsageQuestion({
           {item.kanji.meanings.slice(0, 2).join(", ")}
         </span>
         <p className="text-sm mt-1" style={{ color: "var(--color-ink-muted)" }}>
-          ¿En cuál oración se usa <span style={{ fontFamily: "var(--font-jp)" }}>{item.kanji.character}</span> correctamente?
+          ¿En cuál oración se usa{" "}
+          <span style={{ fontFamily: "var(--font-jp)" }}>{item.kanji.character}</span>{" "}
+          correctamente?
         </p>
+      </div>
+
+      {/* Furigana toggle */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => setShowFurigana((f) => !f)}
+          className="text-xs px-3 py-1 rounded-full transition-all"
+          style={{
+            background: showFurigana ? "var(--color-washi-dark)" : "var(--color-surface)",
+            border: "1px solid var(--color-border)",
+            color: showFurigana ? "var(--color-ink)" : "var(--color-ink-faint)",
+          }}
+        >
+          {showFurigana ? "Ocultar furigana" : "Ver furigana"}
+        </button>
       </div>
 
       <div className="flex flex-col gap-2.5">
@@ -315,6 +334,8 @@ function UsageQuestion({
             border = "var(--color-torii)";
           }
 
+          const showTranslation = answered && (isSelected || opt.is_correct);
+
           return (
             <button
               key={idx}
@@ -330,11 +351,22 @@ function UsageQuestion({
                 >
                   {opt.text_jp}
                 </span>
-                {opt.translation && (
+                {showFurigana && opt.furigana && (
                   <span
-                    className="text-xs"
+                    className="text-xs leading-relaxed"
                     style={{
-                      color: showResult && opt.is_correct ? "var(--color-correct)" : "var(--color-ink-faint)",
+                      fontFamily: "var(--font-jp)",
+                      color: "var(--color-ink-faint)",
+                    }}
+                  >
+                    {opt.furigana}
+                  </span>
+                )}
+                {showTranslation && opt.translation && (
+                  <span
+                    className="text-xs mt-0.5"
+                    style={{
+                      color: opt.is_correct ? "var(--color-correct)" : "var(--color-ink-faint)",
                     }}
                   >
                     {opt.translation}

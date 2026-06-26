@@ -39,3 +39,19 @@ class UserPublic(BaseModel):
     current_generation: int
 
     model_config = {"from_attributes": True}
+
+
+class KanjiPublic(BaseModel):
+    id: int
+    character: str
+    meanings: list[str]
+    onyomi: str | None
+    kunyomi: str | None
+    romaji: str | None
+    jlpt_level: str
+
+    model_config = {"from_attributes": True}
+
+
+class SelectionUpdate(BaseModel):
+    kanji_ids: list[int]

@@ -26,6 +26,9 @@ const shipporiMincho = Shippori_Mincho({
 export const metadata: Metadata = {
   title: "Kanji Enjoyer",
   description: "Aprende los kanji N5 del JLPT con repetición adaptativa",
+  other: {
+    google: "notranslate",
+  },
 };
 
 export default function RootLayout({
@@ -33,7 +36,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
-      lang="ja"
+      lang="es"
+      translate="no"
       className={`${inter.variable} ${notoSansJP.variable} ${shipporiMincho.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">

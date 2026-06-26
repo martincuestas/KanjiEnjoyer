@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────────────────────── */
+@theme {
+  /* Backgrounds — washi/hueso, no blanco puro */
+  --color-washi:        #F7F3EC;
+  --color-washi-light:  #FAF6F0;
+  --color-washi-dark:   #EDE8DF;
+
+  /* Texto — tinta cálida, no negro puro */
+  --color-ink:          #2B2622;
+  --color-ink-muted:    #6B635A;
+  --color-ink-faint:    #A89F96;
+
+  /* Acento principal — rojo torii / laca */
+  --color-torii:        #C1440E;
+  --color-torii-dark:   #9E3509;
+  --color-torii-light:  #E8A088;
+
+  /* Acento secundario — matcha apagado */
+  --color-matcha:       #7C8B6F;
+  --color-matcha-light: #B0BBA4;
+
+  /* Acento terciario — dorado tenue */
+  --color-gold:         #B89A5A;
+
+  /* Estados acierto/error — terrosos suaves */
+  --color-correct:      #5A7A5A;
+  --color-correct-bg:   #EDF4ED;
+  --color-wrong:        #8B4040;
+  --color-wrong-bg:     #F9EDED;
+
+  /* Neutros de superficie */
+  --color-surface:      #FFFFFF;
+  --color-border:       #DDD8D0;
+  --color-border-light: #EAE6DF;
+
+  /* Tipografía */
+  --font-sans:    var(--font-inter);
+  --font-jp:      var(--font-noto-jp);
+  --font-heading: var(--font-shippori);
+
+  /* Radios */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+  --radius-full: 9999px;
+
+  /* Sombras suaves */
+  --shadow-sm:  0 1px 3px rgba(43,38,34,.06), 0 1px 2px rgba(43,38,34,.04);
+  --shadow-md:  0 4px 12px rgba(43,38,34,.08), 0 2px 4px rgba(43,38,34,.05);
+  --shadow-lg:  0 8px 24px rgba(43,38,34,.10), 0 4px 8px rgba(43,38,34,.06);
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100%;
+  background-color: var(--color-washi);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Fuente japonesa para todo el texto JP */
+.font-jp {
+  font-family: var(--font-jp), "Noto Sans JP", sans-serif;
+}
+
+/* Furigana / ruby */
+ruby rt {
+  font-size: 0.5em;
+  color: var(--color-ink-muted);
+  font-family: var(--font-jp), sans-serif;
+}
+
+/* Scroll suave global */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible accesible */
+:focus-visible {
+  outline: 2px solid var(--color-torii);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}

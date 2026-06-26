@@ -4,6 +4,58 @@ import { useRouter } from "next/navigation";
 import { clearToken, isAuthenticated } from "@/lib/auth";
 import { useEffect, useState } from "react";
 
+function SeigaihaPattern() {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: "220px",
+        overflow: "hidden",
+        pointerEvents: "none",
+        zIndex: 0,
+        maskImage: "linear-gradient(to right, transparent 0%, black 55%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 55%)",
+      }}
+    >
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern
+            id="seigaiha-hdr"
+            x="0"
+            y="0"
+            width="30"
+            height="15"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M0,15 A15,15,0,0,1,30,15"
+              fill="none"
+              stroke="#3A6B47"
+              strokeWidth="0.9"
+            />
+            <path
+              d="M-15,0 A15,15,0,0,1,15,0"
+              fill="none"
+              stroke="#3A6B47"
+              strokeWidth="0.9"
+            />
+            <path
+              d="M15,0 A15,15,0,0,1,45,0"
+              fill="none"
+              stroke="#3A6B47"
+              strokeWidth="0.9"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#seigaiha-hdr)" opacity="0.18" />
+      </svg>
+    </div>
+  );
+}
+
 export default function Header() {
   const router = useRouter();
   const [authed, setAuthed] = useState(false);
@@ -21,19 +73,62 @@ export default function Header() {
     <header
       className="w-full px-6 py-4 flex items-center justify-between"
       style={{
+        position: "relative",
         background: "var(--color-washi-light)",
         borderBottom: "1px solid var(--color-border-light)",
+        overflow: "hidden",
       }}
     >
+      <SeigaihaPattern />
+
+      {/* Brand mark */}
       <Link
         href="/"
-        className="text-xl font-bold tracking-tight"
-        style={{ fontFamily: "var(--font-shippori)", color: "var(--color-ink)" }}
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          alignItems: "center",
+          gap: "9px",
+          textDecoration: "none",
+        }}
       >
-        Kanji Enjoyer
+        <div
+          style={{
+            width: "30px",
+            height: "30px",
+            borderRadius: "50%",
+            border: "1.5px solid var(--color-torii)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+            opacity: 0.75,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-jp)",
+              fontSize: "13px",
+              color: "var(--color-torii)",
+              lineHeight: 1,
+            }}
+          >
+            漢
+          </span>
+        </div>
+        <span
+          className="text-xl font-bold tracking-tight"
+          style={{ fontFamily: "var(--font-shippori)", color: "var(--color-ink)" }}
+        >
+          Kanji Enjoyer
+        </span>
       </Link>
 
-      <nav className="flex items-center gap-6 text-sm" style={{ color: "var(--color-ink-muted)" }}>
+      <nav
+        className="flex items-center gap-6 text-sm"
+        style={{ position: "relative", zIndex: 1, color: "var(--color-ink-muted)" }}
+      >
         {authed ? (
           <>
             <Link href="/kanji" className="hover:opacity-70 transition-opacity">Kanji</Link>

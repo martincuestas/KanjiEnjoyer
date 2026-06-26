@@ -11,18 +11,26 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 from app.database import engine, SessionLocal
 from app.models import Base, Kanji, Sentence
 from app.seed.kanji_data import KANJI_SEED
+from app.seed.kanji_data_extra import KANJI_EXTRA
 from app.seed.false_sentences import FALSE_SENTENCES
+from app.seed.false_sentences_extra import FALSE_SENTENCES_EXTRA
 
 FORCE = "--force" in sys.argv
 
 
 def _merge_sentences(entries: list) -> list:
-    """Return entries with false sentences merged in from FALSE_SENTENCES."""
+    """Return entries with all true + false sentences merged in.
+
+    True sentences: base KANJI_SEED + KANJI_EXTRA (extra batches).
+    False sentences: base FALSE_SENTENCES + FALSE_SENTENCES_EXTRA (extra batches).
+    """
     merged = []
     for entry in entries:
         char = entry["character"]
         all_sents = list(entry.get("sentences", []))
+        all_sents.extend(KANJI_EXTRA.get(char, []))
         all_sents.extend(FALSE_SENTENCES.get(char, []))
+        all_sents.extend(FALSE_SENTENCES_EXTRA.get(char, []))
         merged.append({**entry, "sentences": all_sents})
     return merged
 
@@ -66,12 +74,15 @@ def run():
                     furigana=s.get("furigana"),
                     romaji=s.get("romaji"),
                     translation=s.get("translation"),
+                    note=s.get("note"),
                     is_correct=s["is_correct"],
                 ))
                 total_sents += 1
 
+        true_count = sum(1 for e in data for s in e.get("sentences", []) if s["is_correct"])
+        false_count = total_sents - true_count
         db.commit()
-        print(f"Seeded {len(data)} kanji ({total_sents} sentences: {total_sents - len(data)*3} false distractors) successfully.")
+        print(f"Seeded {len(data)} kanji ({total_sents} sentences: {true_count} true, {false_count} false) successfully.")
     except Exception as e:
         db.rollback()
         raise e

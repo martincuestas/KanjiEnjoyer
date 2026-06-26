@@ -47,6 +47,7 @@ class Sentence(Base):
     furigana = Column(Text, nullable=True)   # ruby markup or JSON
     romaji = Column(Text, nullable=True)
     translation = Column(Text, nullable=True)
+    note = Column(Text, nullable=True)  # post-answer feedback (e.g. why a false sentence is wrong)
     is_correct = Column(Boolean, nullable=False)  # True = correct use of this kanji
 
     kanji = relationship("Kanji", back_populates="sentences")

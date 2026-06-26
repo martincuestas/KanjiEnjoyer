@@ -94,6 +94,7 @@ class UsageOption(BaseModel):
     furigana: str | None
     romaji: str | None
     translation: str | None
+    note: str | None = None
     is_correct: bool
 
 

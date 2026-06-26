@@ -151,6 +151,7 @@ def build_usage_question(
             "furigana": s.furigana,
             "romaji": s.romaji,
             "translation": s.translation,
+            "note": s.note,
             "is_correct": is_correct,
         }
 

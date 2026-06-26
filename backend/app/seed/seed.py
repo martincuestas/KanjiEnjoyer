@@ -1,6 +1,7 @@
 """
 Run from the backend/ directory:
-    python -m app.seed.seed
+    python -m app.seed.seed           # skip if already seeded
+    python -m app.seed.seed --force   # wipe kanji+sentences and re-seed
 """
 import sys
 import os
@@ -11,14 +12,25 @@ from app.database import engine, SessionLocal
 from app.models import Base, Kanji, Sentence
 from app.seed.kanji_data import KANJI_SEED
 
+FORCE = "--force" in sys.argv
+
 
 def run():
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        if db.query(Kanji).count() > 0:
-            print("DB already seeded — skipping.")
+        existing = db.query(Kanji).count()
+
+        if existing > 0 and not FORCE:
+            print(f"DB already has {existing} kanji — skipping. Use --force to re-seed.")
             return
+
+        if existing > 0 and FORCE:
+            print(f"--force: deleting {existing} kanji and all sentences…")
+            db.query(Sentence).delete()
+            db.query(Kanji).delete()
+            db.commit()
+            print("Deleted. Re-seeding…")
 
         for entry in KANJI_SEED:
             kanji = Kanji(
@@ -43,7 +55,7 @@ def run():
                 ))
 
         db.commit()
-        print(f"Seeded {len(KANJI_SEED)} kanji successfully.")
+        print(f"Seeded {len(KANJI_SEED)} kanji ({len(KANJI_SEED) * 3} sentences) successfully.")
     except Exception as e:
         db.rollback()
         raise e

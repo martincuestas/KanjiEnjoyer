@@ -276,6 +276,7 @@ function UsageQuestion({
   selectedIdx: number | null;
 }) {
   const [showFurigana, setShowFurigana] = useState(false);
+  const [showTranslationToggle, setShowTranslationToggle] = useState(false);
 
   if (!item.usage_question) return null;
 
@@ -298,19 +299,25 @@ function UsageQuestion({
         </p>
       </div>
 
-      {/* Furigana toggle */}
-      <div className="flex justify-end">
-        <button
-          onClick={() => setShowFurigana((f) => !f)}
-          className="text-xs px-3 py-1 rounded-full transition-all"
-          style={{
-            background: showFurigana ? "var(--color-washi-dark)" : "var(--color-surface)",
-            border: "1px solid var(--color-border)",
-            color: showFurigana ? "var(--color-ink)" : "var(--color-ink-faint)",
-          }}
-        >
-          {showFurigana ? "Ocultar furigana" : "Ver furigana"}
-        </button>
+      {/* Toggles */}
+      <div className="flex justify-end gap-2">
+        {[
+          { active: showFurigana, toggle: () => setShowFurigana((f) => !f), label: "Furigana" },
+          { active: showTranslationToggle, toggle: () => setShowTranslationToggle((f) => !f), label: "Traducción" },
+        ].map(({ active, toggle, label }) => (
+          <button
+            key={label}
+            onClick={toggle}
+            className="text-xs px-3 py-1 rounded-full transition-all"
+            style={{
+              background: active ? "var(--color-washi-dark)" : "var(--color-surface)",
+              border: "1px solid var(--color-border)",
+              color: active ? "var(--color-ink)" : "var(--color-ink-faint)",
+            }}
+          >
+            {active ? `Ocultar ${label.toLowerCase()}` : `Ver ${label.toLowerCase()}`}
+          </button>
+        ))}
       </div>
 
       <div className="flex flex-col gap-2.5">
@@ -334,7 +341,7 @@ function UsageQuestion({
             border = "var(--color-torii)";
           }
 
-          const showTranslation = answered && (isSelected || opt.is_correct);
+          const showTranslation = showTranslationToggle || (answered && (isSelected || opt.is_correct));
 
           return (
             <button

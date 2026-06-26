@@ -39,6 +39,7 @@ export default function Header() {
             <Link href="/kanji" className="hover:opacity-70 transition-opacity">Kanji</Link>
             <Link href="/study" className="hover:opacity-70 transition-opacity">Estudiar</Link>
             <Link href="/stats" className="hover:opacity-70 transition-opacity">Stats</Link>
+            <Link href="/settings" className="hover:opacity-70 transition-opacity">Ajustes</Link>
             <button
               onClick={logout}
               className="hover:opacity-70 transition-opacity"

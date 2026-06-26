@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..models import Kanji, User
-from ..schemas import AnswerRequest, AnswerResponse, RoundRequest, RoundResponse
+from ..models import UserProgress
+from ..schemas import AnswerRequest, AnswerResponse, ResetResponse, RoundRequest, RoundResponse
 from ..services.auth_service import get_current_user
 from ..services import study_engine
 
@@ -67,4 +68,32 @@ def submit_answer(
         mastery_usage=prog.mastery_usage,
         reps_meaning=prog.reps_meaning,
         reps_usage=prog.reps_usage,
+    )
+
+
+@router.post("/reset", response_model=ResetResponse)
+def reset_progress(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # Reset all progress entries — mastery and reps back to zero
+    rows = (
+        db.query(UserProgress)
+        .filter(UserProgress.user_id == current_user.id)
+        .all()
+    )
+    for row in rows:
+        row.mastery_meaning = 0.0
+        row.reps_meaning = 0
+        row.mastery_usage = 0.0
+        row.reps_usage = 0
+        row.last_seen = None
+
+    # Increment generation — attempts already logged keep their old generation value
+    current_user.current_generation += 1
+    db.commit()
+
+    return ResetResponse(
+        current_generation=current_user.current_generation,
+        kanji_reset=len(rows),
     )

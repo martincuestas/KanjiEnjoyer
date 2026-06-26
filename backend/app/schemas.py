@@ -127,3 +127,8 @@ class AnswerResponse(BaseModel):
     mastery_usage: float
     reps_meaning: int
     reps_usage: int
+
+
+class ResetResponse(BaseModel):
+    current_generation: int
+    kanji_reset: int

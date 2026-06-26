@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .database import engine
 from .models import Base
-from .routers import auth, kanji, study
+from .routers import auth, kanji, stats, study
 from .seed.seed import run as seed_db
 
 Base.metadata.create_all(bind=engine)
@@ -22,6 +22,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(kanji.router)
 app.include_router(study.router)
+app.include_router(stats.router)
 
 
 @app.get("/health")

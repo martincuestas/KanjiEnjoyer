@@ -132,3 +132,40 @@ class AnswerResponse(BaseModel):
 class ResetResponse(BaseModel):
     current_generation: int
     kanji_reset: int
+
+
+# ── Stats ──────────────────────────────────────────────────────────────────────
+
+class TypeAccuracy(BaseModel):
+    total: int
+    correct: int
+    accuracy: float
+
+
+class GenerationSummary(BaseModel):
+    generation: int
+    meaning: TypeAccuracy
+    usage: TypeAccuracy
+
+
+class KanjiStatItem(BaseModel):
+    kanji_id: int
+    character: str
+    meanings: list[str]
+    mastery_meaning: float
+    mastery_usage: float
+    reps_meaning: int
+    reps_usage: int
+
+
+class DailyPoint(BaseModel):
+    date: str        # YYYY-MM-DD
+    total: int
+    correct: int
+
+
+class StatsResponse(BaseModel):
+    current_generation: int
+    all_generations: list[GenerationSummary]
+    kanji_progress: list[KanjiStatItem]
+    daily_activity: list[DailyPoint]

@@ -5,7 +5,7 @@ export default function Home() {
         className="text-5xl font-bold tracking-tight"
         style={{ fontFamily: "var(--font-shippori)", color: "var(--color-ink)" }}
       >
-        漢字 Enjoyer
+        Kanji Enjoyer
       </h1>
       <p style={{ color: "var(--color-ink-muted)" }} className="text-lg">
         Aprende los kanji N5 con repetición adaptativa.

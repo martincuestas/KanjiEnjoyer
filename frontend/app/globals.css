@@ -2,38 +2,38 @@
 
 /* ─── Design tokens ─────────────────────────────────────────────────────────── */
 @theme {
-  /* Backgrounds — washi/hueso, no blanco puro */
-  --color-washi:        #F7F3EC;
-  --color-washi-light:  #FAF6F0;
-  --color-washi-dark:   #EDE8DF;
+  /* Backgrounds — papel washi con tinte de bosque */
+  --color-washi:        #F0F4EC;
+  --color-washi-light:  #F5F8F2;
+  --color-washi-dark:   #E0E8D8;
 
-  /* Texto — tinta cálida, no negro puro */
-  --color-ink:          #2B2622;
-  --color-ink-muted:    #6B635A;
-  --color-ink-faint:    #A89F96;
+  /* Texto — tinta de bosque oscuro, no negro puro */
+  --color-ink:          #1A2818;
+  --color-ink-muted:    #4A6640;
+  --color-ink-faint:    #849E78;
 
-  /* Acento principal — rojo torii / laca */
-  --color-torii:        #C1440E;
-  --color-torii-dark:   #9E3509;
-  --color-torii-light:  #E8A088;
+  /* Acento principal — verde bambú / madera de cedro */
+  --color-torii:        #3A6B47;
+  --color-torii-dark:   #274D32;
+  --color-torii-light:  #8BBD9A;
 
-  /* Acento secundario — matcha apagado */
-  --color-matcha:       #7C8B6F;
-  --color-matcha-light: #B0BBA4;
+  /* Acento secundario — musgo apagado */
+  --color-matcha:       #6B8B5E;
+  --color-matcha-light: #A8BF9A;
 
-  /* Acento terciario — dorado tenue */
-  --color-gold:         #B89A5A;
+  /* Acento terciario — madera / dorado natural */
+  --color-gold:         #A8883A;
 
-  /* Estados acierto/error — terrosos suaves */
-  --color-correct:      #5A7A5A;
-  --color-correct-bg:   #EDF4ED;
-  --color-wrong:        #8B4040;
-  --color-wrong-bg:     #F9EDED;
+  /* Estados acierto/error */
+  --color-correct:      #3A6B47;
+  --color-correct-bg:   #E8F2EB;
+  --color-wrong:        #8B5540;
+  --color-wrong-bg:     #F5EDE9;
 
   /* Neutros de superficie */
-  --color-surface:      #FFFFFF;
-  --color-border:       #DDD8D0;
-  --color-border-light: #EAE6DF;
+  --color-surface:      #FAFCF8;
+  --color-border:       #C4D4BA;
+  --color-border-light: #D8E5CF;
 
   /* Tipografía */
   --font-sans:    var(--font-inter);
@@ -46,10 +46,10 @@
   --radius-lg:   16px;
   --radius-full: 9999px;
 
-  /* Sombras suaves */
-  --shadow-sm:  0 1px 3px rgba(43,38,34,.06), 0 1px 2px rgba(43,38,34,.04);
-  --shadow-md:  0 4px 12px rgba(43,38,34,.08), 0 2px 4px rgba(43,38,34,.05);
-  --shadow-lg:  0 8px 24px rgba(43,38,34,.10), 0 4px 8px rgba(43,38,34,.06);
+  /* Sombras — con tinte verde muy sutil */
+  --shadow-sm:  0 1px 3px rgba(26,40,24,.07), 0 1px 2px rgba(26,40,24,.05);
+  --shadow-md:  0 4px 12px rgba(26,40,24,.09), 0 2px 4px rgba(26,40,24,.06);
+  --shadow-lg:  0 8px 24px rgba(26,40,24,.11), 0 4px 8px rgba(26,40,24,.07);
 }
 
 /* ─── Base ───────────────────────────────────────────────────────────────────── */

@@ -53,7 +53,7 @@ export default function RegisterPage() {
             className="text-xl font-semibold mt-1"
             style={{ fontFamily: "var(--font-shippori)", color: "var(--color-ink)" }}
           >
-            漢字 Enjoyer
+            Kanji Enjoyer
           </h1>
           <p className="text-sm mt-0.5" style={{ color: "var(--color-ink-faint)" }}>
             Creá tu cuenta

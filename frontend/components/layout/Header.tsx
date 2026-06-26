@@ -30,7 +30,7 @@ export default function Header() {
         className="text-xl font-bold tracking-tight"
         style={{ fontFamily: "var(--font-shippori)", color: "var(--color-ink)" }}
       >
-        漢字 Enjoyer
+        Kanji Enjoyer
       </Link>
 
       <nav className="flex items-center gap-6 text-sm" style={{ color: "var(--color-ink-muted)" }}>

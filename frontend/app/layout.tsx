@@ -24,7 +24,7 @@ const shipporiMincho = Shippori_Mincho({
 });
 
 export const metadata: Metadata = {
-  title: "漢字 Enjoyer",
+  title: "Kanji Enjoyer",
   description: "Aprende los kanji N5 del JLPT con repetición adaptativa",
 };
 

@@ -11,6 +11,16 @@ export function setToken(token: string): void {
 
 export function clearToken(): void {
   localStorage.removeItem("token");
+  localStorage.removeItem("username");
+}
+
+export function getStoredUsername(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("username");
+}
+
+export function storeUsername(username: string): void {
+  localStorage.setItem("username", username);
 }
 
 export function isAuthenticated(): boolean {

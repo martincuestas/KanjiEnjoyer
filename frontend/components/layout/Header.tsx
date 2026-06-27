@@ -78,7 +78,7 @@ export default function Header() {
 
       {/* Brand mark */}
       <Link
-        href="/"
+        href={isAuthed ? "/kanji" : "/"}
         style={{
           position: "relative",
           zIndex: 1,

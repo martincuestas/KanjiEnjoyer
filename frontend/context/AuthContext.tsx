@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { clearToken, getToken, setToken } from "@/lib/auth";
+import { clearToken, getToken, getStoredUsername, setToken, storeUsername } from "@/lib/auth";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -21,12 +21,13 @@ const AuthContext = createContext<AuthCtx>({
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [username, setUsername] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(() => getStoredUsername());
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     const token = getToken();
     if (!token) {
+      setUsername(null);
       setAuthLoading(false);
       return;
     }
@@ -37,16 +38,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then((data) => {
         if (data?.username) {
           setUsername(data.username);
+          storeUsername(data.username);
         } else {
           clearToken();
+          setUsername(null);
         }
       })
-      .catch(() => {})
+      .catch(() => {
+        // backend unreachable — keep the cached username so the UI stays correct
+      })
       .finally(() => setAuthLoading(false));
   }, []);
 
   function login(token: string, uname: string) {
     setToken(token);
+    storeUsername(uname);
     setUsername(uname);
   }
 
